@@ -1,4 +1,4 @@
-randomKFoldsdata <- function(df)
+splitData <- function(df)
 {
   set.seed(Sys.time())
   KFoldsdata<-list()
@@ -19,4 +19,4 @@ randomKFoldsdata <- function(df)
 
 }
 
-randomKFoldsdata(df_train)
+

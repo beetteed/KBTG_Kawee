@@ -1,10 +1,4 @@
 
-library(parallel)
-source('R_code/Evaluation/imAccuracy.R')
-source('R_code/Evaluation/imPrecision.R')
-source('R_code/Evaluation/imSensitivity.R')
-source('R_code/Evaluation/imSpecificity.R')
-source('R_code/Evaluation/summarySE.R')
 
 Evaluation <- function(CrossValidationResult)
 {
@@ -63,4 +57,4 @@ Evaluation <- function(CrossValidationResult)
 
 }
 
-Evaluation(CrossValidationResult)
+

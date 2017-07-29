@@ -1,4 +1,4 @@
-library(e1071)
+
 
 CrossValidationResult <- data.frame(
   Type=c(),
@@ -7,14 +7,14 @@ CrossValidationResult <- data.frame(
 )
 
 
-selectedAtrr <- c("card_no","label","bill_cyc","age","bill_cyc","incm_amt","cr_lmt_amt","prev_cr_lmt_amt")
+selectedAtrr <- c("label","bill_cyc","age","bill_cyc","incm_amt","cr_lmt_amt","prev_cr_lmt_amt")
     
 dataTest <- df_train[,selectedAtrr]
 dataTrain <- df_train[,selectedAtrr ]
     
     
-form.in <- as.formula(paste(selectedAtrr[2],"~", 
-                      paste(selectedAtrr[!selectedAtrr %in% selectedAtrr[1:2]], 
+form.in <- as.formula(paste(selectedAtrr[1],"~", 
+                      paste(selectedAtrr[!selectedAtrr %in% selectedAtrr[1]], 
                       collapse = " + ")))
 
 Model<-svm(form.in,data=dataTrain)

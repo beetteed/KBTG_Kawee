@@ -1,5 +1,4 @@
 
-library(dplyr)
 datapath <-"D:/tj_datatrack_problem/"
 result <-"D:/tj_datatrack_problem/Result/"
 
