@@ -39,7 +39,7 @@ randomKFoldsdata <- function(df,times,numfolds)
     }
     
   }
-  write.csv(foldsData, file = paste("R_code/Result/foldsDatas.csv",sep=""))
+  write.csv(foldsData, file = paste(result,"foldsDatas.csv",sep=""))
 }
 
 

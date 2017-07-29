@@ -1,7 +1,7 @@
 
 library(dplyr)
 datapath <-"D:/tj_datatrack_problem/"
-result <-"D:/tj_datatrack_problem/Result"
+result <-"D:/tj_datatrack_problem/Result/"
 
 df_train<- read.csv(paste(datapath,"1/tj_01_training.csv",sep=""),header = FALSE)
 df_test<- read.csv(paste(datapath,"1/tj_01_test.csv",sep=""),header = FALSE)
