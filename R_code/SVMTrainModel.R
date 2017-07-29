@@ -1,5 +1,4 @@
-
-library(neuralnet)
+library(e1071)
 
 CrossValidationResult <- data.frame(
   Time =c(),
@@ -8,53 +7,37 @@ CrossValidationResult <- data.frame(
   Predict=c(),
   Label =c()
 )
+
+numfolds<-10
 for(t in 1:1)
 {
   
-  for(k in 1:1)
+  for(k in 1:numfolds)
   {
     fold<-paste("T",t,"_F",k,sep="")
     dataTest_Id <- get(paste("dataTest_",fold,sep = ""))
     dataTrain_Id <- get(paste("dataTrain_",fold, sep=""))
     
-    selectedAtrr <- c("card_no","bill_cyc","age","bill_cyc","incm_amt","cr_lmt_amt","prev_cr_lmt_amt")
+    selectedAtrr <- c("card_no","label","bill_cyc","age","bill_cyc","incm_amt","cr_lmt_amt","prev_cr_lmt_amt")
     
     dataTest <- df_train[ which(df_train$card_no %in% dataTest_Id$Id),selectedAtrr]
     dataTrain <- df_train[ which(df_train$card_no %in% dataTrain_Id$Id),selectedAtrr ]
     
     
-    form.in <- as.formula(paste(selectedAtrr[1],"~", paste(selectedAtrr[!selectedAtrr %in% selectedAtrr[1]], 
+    form.in <- as.formula(paste(selectedAtrr[2],"~", paste(selectedAtrr[!selectedAtrr %in% selectedAtrr[1:2]], 
                                                        collapse = " + ")))
-    # Scale data ignore label
-    dataTest[, -c(1)] <- scale(dataTest[, -c(1)])
-    dataTrain[, -c(1)] <- scale(dataTrain[, -c(1)])
+
+    Model<-svm(form.in,data=dataTrain)
     
-    struct<-c(5,3)
-    Model<-neuralnet(form.in,data=dataTrain,hidden=struct,
-                     algorithm = "rprop+", err.fct = "sse", act.fct = "logistic", 
-                     threshold = 0.1,learningrate =0.5,rep=1000,
-                     linear.output=TRUE)
-    
-    # SaveModel <-paste("T",t,"_F",k,sep="")
-    Modelname <- paste("NN_Model_",fold,".Rdata",sep="")
-    save(Model,file=Modelname)
-    
-    #plot Model 
-    jpeg(file=paste("NNmodel_",fold,".jpg",sep=""),
-         units="in", width=5, height=5,res=300)
-    p<-plot(Model)
-    print(p)
-    dev.off()
-    
+
     # Compute predictions
-    pr.train <- compute(Model, dataTest[selectedAtrr[2:length(selectedAtrr)]])
-    # Extract results
-    res.train<- pr.test$net.result
+    res.train <- predict(Model, dataTest[selectedAtrr[2:length(selectedAtrr)]])
+    res.train.class <- apply(as.data.frame(res.train), 1, cut,c(-Inf,0.5, Inf), labels=c(0,1))
     
-    pr.test <- compute(Model, dataTest[selectedAtrr[2:length(selectedAtrr)]])
-    # Extract results
-    res.test<- pr.test$net.result
     
+    res.test <- predict(Model, dataTest[selectedAtrr[2:length(selectedAtrr)]])
+    res.test.class <- apply(as.data.frame(res.test), 1, cut,c(-Inf,0.5, Inf), labels=c(0,1))
+   
     #save result for eval
     CrossValidationResult <- rbind(CrossValidationResult,
                                    data.frame(
@@ -62,6 +45,7 @@ for(t in 1:1)
                                      Fold =k,
                                      Type="Train",
                                      Predict=res.train,
+                                     Classify = res.train.class,
                                      Label =dataTrain$label
                                    ))
     
@@ -71,6 +55,7 @@ for(t in 1:1)
                                      Fold =k,
                                      Type="Test",
                                      Predict=res.test,
+                                     Classify = res.train.class,
                                      Label =dataTest$label
                                    ))
 

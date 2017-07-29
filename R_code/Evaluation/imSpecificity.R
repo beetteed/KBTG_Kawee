@@ -1,11 +1,8 @@
 imSpecificity <- function(ref,pred)
 {
   library(SDMTools)
-  
-  ref <- melt(imageData(ref))
-  pred <- melt(imageData(pred))
-  mat = confusion.matrix(ref$value,pred$value)
-  acc = accuracy(ref$value,pred$value)
+  mat = confusion.matrix(ref,pred)
+  acc = accuracy(ref,pred)
   return(acc[5])
 }
 

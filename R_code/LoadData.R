@@ -2,8 +2,8 @@
 library(dplyr)
 datapath <-"D:/tj_datatrack_problem/"
 
-df_train<- read.csv(paste(datapath,"/1/tj_01_training.csv",sep=""),header = FALSE)
-df_test<- read.csv(paste(datapath,"/1/tj_01_test.csv",sep=""),header = FALSE)
+df_train<- read.csv(paste(datapath,"1/tj_01_training.csv",sep=""),header = FALSE)
+df_test<- read.csv(paste(datapath,"1/tj_01_test.csv",sep=""),header = FALSE)
 
 
 df1<- read.csv(paste(datapath,"/1/tj_01_creditcard_card.csv",sep=""))
@@ -59,6 +59,3 @@ length(unique(df_train$card_no))
 #df_test$prev_cr_lmt_amt<-factor(df_test$prev_cr_lmt_amt)
 #df_test$cst_id<-factor(df_test$cst_id)
 
-names(df_train) <- c("card_no","bill_cyc","pos_dt.x","cst_id",       
-                     "open_dt","exp_dt","cr_lmt_amt","prev_cr_lmt_amt","incm_amt" ,      
-                     "age","main_zip_cd","cr_line_amt","pos_dt.y","label")
